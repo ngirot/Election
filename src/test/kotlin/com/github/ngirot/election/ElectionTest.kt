@@ -1,5 +1,7 @@
-package com.github.ngirot.condorcet.election
+package com.github.ngirot.election
 
+import com.github.ngirot.election.ballot.Ballot
+import com.github.ngirot.election.ballot.InvalidBallotException
 import org.junit.jupiter.api.Test
 import kotlin.test.assertFailsWith
 import kotlin.test.asserter

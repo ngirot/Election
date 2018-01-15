@@ -1,4 +1,4 @@
-package com.github.ngirot.condorcet.election
+package com.github.ngirot.election.ballot
 
 class InvalidBallotException: Exception() {
 }

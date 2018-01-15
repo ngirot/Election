@@ -1,6 +1,8 @@
-package com.github.ngirot.condorcet.election
+package com.github.ngirot.election
 
-import com.github.ngirot.condorcet.graph.Graph
+import com.github.ngirot.election.ballot.Ballot
+import com.github.ngirot.election.ballot.InvalidBallotException
+import com.github.ngirot.election.graph.Graph
 
 class Election<T>(private val candidates: List<T>) {
 

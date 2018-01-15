@@ -1,4 +1,4 @@
-package com.github.ngirot.condorcet.election
+package com.github.ngirot.election.ballot
 
 import org.junit.jupiter.api.Test
 import kotlin.test.asserter

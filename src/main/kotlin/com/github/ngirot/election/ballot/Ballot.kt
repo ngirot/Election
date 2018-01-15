@@ -1,4 +1,4 @@
-package com.github.ngirot.condorcet.election
+package com.github.ngirot.election.ballot
 
 data class Ballot<out T> constructor(val orderOfPreference: List<T>) {
 

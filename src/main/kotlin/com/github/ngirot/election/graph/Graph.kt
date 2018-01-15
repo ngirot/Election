@@ -1,4 +1,4 @@
-package com.github.ngirot.condorcet.graph
+package com.github.ngirot.election.graph
 
 class Graph<T> {
 

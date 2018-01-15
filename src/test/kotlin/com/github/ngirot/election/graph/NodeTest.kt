@@ -1,4 +1,4 @@
-package com.github.ngirot.condorcet.graph
+package com.github.ngirot.election.graph
 
 import org.junit.jupiter.api.Test
 import kotlin.test.asserter
