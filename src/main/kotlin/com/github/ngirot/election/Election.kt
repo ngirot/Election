@@ -10,9 +10,7 @@ class Election<T>(private val candidates: List<T>) {
         val graph = Graph<T>()
 
         votes.forEach { b ->
-            if (!candidates.containsAll(b.orderOfPreference)) {
-                throw InvalidBallotException()
-            }
+            checkBallotValidity(b)
 
             b.extractLinks().forEach { pair ->
                 graph.add(pair.first, pair.second)
@@ -25,6 +23,29 @@ class Election<T>(private val candidates: List<T>) {
             null
         } else {
             winners.first()
+        }
+    }
+
+    fun firstPastThePost(votes: Sequence<Ballot<T>>): T? {
+        val counts = votes.map { checkBallotValidity(it);it.first() }
+                .filter { it != null }
+                .groupBy { it }
+                .mapValues { it.value.size }
+
+        val max = counts.maxBy { it.value }?.value ?: return null
+
+        val winners = counts.filter { it.value == max }
+        return if (winners.size != 1) {
+            null
+        } else {
+            winners.keys.first()
+        }
+    }
+
+
+    private fun checkBallotValidity(b: Ballot<T>) {
+        if (!candidates.containsAll(b.orderOfPreference)) {
+            throw InvalidBallotException()
         }
     }
 }

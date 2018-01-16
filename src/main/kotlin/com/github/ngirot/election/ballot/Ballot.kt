@@ -16,4 +16,8 @@ data class Ballot<out T> constructor(val orderOfPreference: List<T>) {
 
         return links.asSequence()
     }
+
+    fun first(): T? {
+        return orderOfPreference.firstOrNull()
+    }
 }

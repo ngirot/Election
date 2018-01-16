@@ -52,7 +52,6 @@ internal class ElectionTest {
                 createBallotList(16, ballot3),
                 createBallotList(2, ballot4))
                 .flatten()
-                .asSequence()
 
         val elected = election.condorcet(ballotSequence)
 
@@ -76,11 +75,77 @@ internal class ElectionTest {
                 createBallotList(10, ballot4),
                 createBallotList(8, ballot5))
                 .flatten()
-                .asSequence()
 
         val elected = election.condorcet(ballotSequence)
 
         asserter.assertNull("There is not Condorcet winner", elected)
+    }
+
+    @Test
+    fun firstPastThePost_with_no_ballot_should_elect_no_one() {
+        val election = Election(listOf("A", "B"))
+
+        var elected = election.firstPastThePost(sequenceOf())
+
+        asserter.assertNull("Should not have a winner", elected)
+    }
+
+    @Test
+    fun firstPastThePost_vote_with_a_single_ballot_should_elect_the_first_of_the_sequence() {
+        val election = Election(listOf("A", "B"))
+        val ballot = Ballot(listOf("A"))
+
+        val elected = election.firstPastThePost(sequenceOf(ballot))
+
+        asserter.assertEquals("Should be the single ballot name", "A", elected)
+    }
+
+    @Test
+    fun firstPastThePost_vote_should_fail_if_someone_vote_for_a_not_candidate() {
+        val election = Election(listOf("X", "Y"))
+        val ballot = Ballot(listOf("Z"))
+
+        assertFailsWith(InvalidBallotException::class) {
+            election.firstPastThePost(sequenceOf(ballot))
+        }
+    }
+
+    @Test
+    fun firstPastThePost_vote_should_elected_the_candidate_with_the_most_ballot() {
+        val election = Election(listOf("A", "B", "C"))
+
+        val ballot1 = Ballot(listOf("A"))
+        val ballot2 = Ballot(listOf("B"))
+        val ballot3 = Ballot(listOf("C"))
+
+        val ballotSequence = sequenceOf(
+                createBallotList(5, ballot1),
+                createBallotList(17, ballot2),
+                createBallotList(8, ballot3))
+                .flatten()
+
+        val elected = election.firstPastThePost(ballotSequence)
+
+        asserter.assertEquals("Should be B", "B", elected)
+    }
+
+    @Test
+    fun firstPastThePost_vote_should_elected_no_one_if_two_candidate_haev_the_same_amount_of_ballot() {
+        val election = Election(listOf("A", "B", "C"))
+
+        val ballot1 = Ballot(listOf("A"))
+        val ballot2 = Ballot(listOf("B"))
+        val ballot3 = Ballot(listOf("C"))
+
+        val ballotSequence = sequenceOf(
+                createBallotList(5, ballot1),
+                createBallotList(10, ballot2),
+                createBallotList(10, ballot3))
+                .flatten()
+
+        val elected = election.firstPastThePost(ballotSequence)
+
+        asserter.assertNull("Should not have a winner", elected)
     }
 
 
