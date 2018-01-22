@@ -19,10 +19,10 @@ class Election<T>(private val candidates: List<T>) {
 
         val winners = candidates.filter { graph.nodesFor(it).filter { it.weight < 0 }.count() == 0 }
 
-        return if (winners.size != 1) {
-            null
-        } else {
+        return if (winners.size == 1) {
             winners.first()
+        } else {
+            null
         }
     }
 
@@ -32,13 +32,14 @@ class Election<T>(private val candidates: List<T>) {
                 .groupBy { it }
                 .mapValues { it.value.size }
 
-        val max = counts.maxBy { it.value }?.value ?: return null
+        val max = counts.map { it.value }.max()
 
         val winners = counts.filter { it.value == max }
-        return if (winners.size != 1) {
-            null
-        } else {
+
+        return if (winners.size == 1) {
             winners.keys.first()
+        } else {
+            null
         }
     }
 
