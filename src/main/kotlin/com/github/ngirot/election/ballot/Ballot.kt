@@ -9,7 +9,7 @@ data class Ballot<out T> constructor(val orderOfPreference: List<T>) {
 
         for(i in 0 until preferenceSize) {
             for (j in i+1 until preferenceSize) {
-                links.add(Pair(orderOfPreference[i], orderOfPreference[j]))
+                links.add(orderOfPreference[i] to orderOfPreference[j])
             }
 
         }

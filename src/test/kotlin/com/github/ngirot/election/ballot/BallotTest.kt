@@ -11,9 +11,9 @@ internal class BallotTest {
 
         val links = ballot.extractLinks()
 
-        asserter.assertTrue("a -> b", links.contains(Pair("a", "b")))
-        asserter.assertTrue("a -> c", links.contains(Pair("a", "c")))
-        asserter.assertTrue("b -> c", links.contains(Pair("b", "c")))
+        asserter.assertTrue("a -> b", links.contains("a" to "b"))
+        asserter.assertTrue("a -> c", links.contains("a" to "c"))
+        asserter.assertTrue("b -> c", links.contains("b" to "c"))
     }
 
     @Test
@@ -22,8 +22,8 @@ internal class BallotTest {
 
         val links = ballot.extractLinks()
 
-        asserter.assertTrue("c -> a", !links.contains(Pair("c", "a")))
-        asserter.assertTrue("c -> b", !links.contains(Pair("c", "b")))
-        asserter.assertTrue("b -> a", !links.contains(Pair("b", "a")))
+        asserter.assertTrue("c -> a", !links.contains("c" to "a"))
+        asserter.assertTrue("c -> b", !links.contains("c" to "b"))
+        asserter.assertTrue("b -> a", !links.contains("b" to "a"))
     }
 }
