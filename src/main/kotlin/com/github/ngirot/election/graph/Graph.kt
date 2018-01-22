@@ -21,10 +21,10 @@ class Graph<T> {
         }
     }
 
-    fun nodesFor(item: T): Sequence<Node<T>> {
+    fun nodesFor(item: T): List<Node<T>> {
         return nodes.filter { node ->
             node.from == item
-        }.asSequence()
+        }
     }
 
     override fun toString(): String {
