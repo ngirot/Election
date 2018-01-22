@@ -2,7 +2,7 @@ package com.github.ngirot.election.ballot
 
 data class Ballot<out T> constructor(val orderOfPreference: List<T>) {
 
-    fun extractLinks(): Sequence<Pair<T, T>> {
+    fun extractLinks(): List<Pair<T, T>> {
         val links = mutableListOf<Pair<T, T>>()
 
         val preferenceSize = orderOfPreference.size
@@ -14,7 +14,7 @@ data class Ballot<out T> constructor(val orderOfPreference: List<T>) {
 
         }
 
-        return links.asSequence()
+        return links
     }
 
     fun first(): T? {
