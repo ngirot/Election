@@ -21,10 +21,12 @@ class Graph<T> {
         }
     }
 
-    fun nodesFor(item: T): List<Node<T>> {
-        return nodes.filter { node ->
-            node.from == item
-        }
+    fun linksFor(nodeName: T): List<Node<T>> {
+        return nodes.filter { it.from == nodeName }
+    }
+
+    fun nodeNames(): List<T> {
+        return nodes.flatMap { listOf(it.from, it.to) }.distinct()
     }
 
     override fun toString(): String {

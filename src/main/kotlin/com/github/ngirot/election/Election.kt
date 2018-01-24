@@ -2,22 +2,16 @@ package com.github.ngirot.election
 
 import com.github.ngirot.election.ballot.Ballot
 import com.github.ngirot.election.ballot.InvalidBallotException
-import com.github.ngirot.election.graph.Graph
+import com.github.ngirot.election.method.Condorcet
+import com.github.ngirot.election.method.FirstPastThePost
 
-class Election<T>(private val candidates: List<T>) {
+class Election<T: Any>(private val candidates: List<T>) {
 
     fun condorcet(votes: Sequence<Ballot<T>>): T? {
-        val graph = Graph<T>()
+        val losses = Condorcet.countLoss(votes, this::checkBallotValidity)
 
-        votes.forEach { b ->
-            checkBallotValidity(b)
-
-            b.extractLinks().forEach { pair ->
-                graph.add(pair.first, pair.second)
-            }
-        }
-
-        val winners = candidates.filter { graph.nodesFor(it).filter { it.weight < 0 }.count() == 0 }
+        val winners = losses.filter { it.value == 0 }
+                .map { it.key }
 
         return if (winners.size == 1) {
             winners.first()
@@ -27,13 +21,9 @@ class Election<T>(private val candidates: List<T>) {
     }
 
     fun firstPastThePost(votes: Sequence<Ballot<T>>): T? {
-        val counts = votes.map { checkBallotValidity(it);it.first() }
-                .filter { it != null }
-                .groupBy { it }
-                .mapValues { it.value.size }
+        val counts = FirstPastThePost.score(votes, this::checkBallotValidity)
 
         val max = counts.map { it.value }.max()
-
         val winners = counts.filter { it.value == max }
 
         return if (winners.size == 1) {
@@ -42,7 +32,6 @@ class Election<T>(private val candidates: List<T>) {
             null
         }
     }
-
 
     private fun checkBallotValidity(b: Ballot<T>) {
         if (!candidates.containsAll(b.orderOfPreference)) {

@@ -11,7 +11,7 @@ internal class GraphTest {
 
         graph.add("A", "B")
 
-        val nodes = graph.nodesFor("A")
+        val nodes = graph.linksFor("A")
 
         asserter.assertEquals("", 1, nodes.size)
         asserter.assertEquals("", 1L, nodes.first().weight)
@@ -25,7 +25,7 @@ internal class GraphTest {
             graph.add("A", "B")
         }
 
-        val nodes = graph.nodesFor("A")
+        val nodes = graph.linksFor("A")
 
         asserter.assertEquals("", 1, nodes.size)
         asserter.assertEquals("", 3L, nodes.first().weight)
@@ -38,7 +38,7 @@ internal class GraphTest {
         graph.add("A", "B")
         graph.add("B", "A")
 
-        val nodes = graph.nodesFor("A")
+        val nodes = graph.linksFor("A")
 
         asserter.assertEquals("", 1, nodes.size)
         asserter.assertEquals("", 0L, nodes.first().weight)
@@ -51,9 +51,26 @@ internal class GraphTest {
         graph.add("A", "B")
         graph.add("A", "B")
 
-        val nodes = graph.nodesFor("B")
+        val nodes = graph.linksFor("B")
 
         asserter.assertEquals("", 1, nodes.size)
         asserter.assertEquals("", -3L, nodes.first().weight)
+    }
+
+    @Test
+    fun nodeNames_should_return_an_empty_list_when_there_is_no_nodes() {
+        asserter.assertTrue("No names", Graph<String>().nodeNames().isEmpty())
+    }
+
+    @Test
+    fun nodeNames_should_return_all_nodes_values() {
+        val graph = Graph<String>()
+        graph.add("A", "B")
+        graph.add("B", "C")
+
+        asserter.assertTrue("Contains A", graph.nodeNames().contains("A"))
+        asserter.assertTrue("Contains B", graph.nodeNames().contains("B"))
+        asserter.assertTrue("Contains C", graph.nodeNames().contains("C"))
+        asserter.assertEquals("3 values (A, B and C)", 3, graph.nodeNames().size)
     }
 }
