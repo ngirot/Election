@@ -9,12 +9,12 @@ class Election<T: Any>(private val candidates: List<T>) {
 
     fun condorcet(votes: Sequence<Ballot<T>>): T? {
         val losses = Condorcet.countLoss(votes, this::checkBallotValidity)
+        val ranking = Ranking.byLowerScore(losses)
 
-        val winners = losses.filter { it.value == 0 }
-                .map { it.key }
+        val winners = ranking.filter { it.value == 1 }
 
         return if (winners.size == 1) {
-            winners.first()
+            winners.entries.first()?.key
         } else {
             null
         }
@@ -22,12 +22,12 @@ class Election<T: Any>(private val candidates: List<T>) {
 
     fun firstPastThePost(votes: Sequence<Ballot<T>>): T? {
         val counts = FirstPastThePost.score(votes, this::checkBallotValidity)
+        val ranking = Ranking.byHigherScore(counts)
 
-        val max = counts.map { it.value }.max()
-        val winners = counts.filter { it.value == max }
+        val winners = ranking.filter { it.value == 1 }
 
         return if (winners.size == 1) {
-            winners.keys.first()
+            winners.entries.first()?.key
         } else {
             null
         }
