@@ -50,9 +50,11 @@ internal class FirstPastThePostTest {
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun <T> alwaysPass(b: Ballot<T>) {
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun <T> alwaysFail(b: Ballot<T>) {
         throw Exception()
     }

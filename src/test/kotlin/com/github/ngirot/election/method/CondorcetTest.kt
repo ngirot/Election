@@ -65,9 +65,11 @@ internal class CondorcetTest {
         asserter.assertEquals("C lose against B", 1, scores["C"])
     }
 
-    private fun <T> alwaysPass(b: Ballot<T>) {
+    @Suppress("UNUSED_PARAMETER")
+    private fun <T> alwaysPass( b: Ballot<T>) {
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun <T> alwaysFail(b: Ballot<T>) {
         throw Exception()
     }
