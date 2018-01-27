@@ -5,21 +5,19 @@ import com.github.ngirot.election.graph.Graph
 
 object Condorcet {
 
-    fun <T: Any> countLoss(ballots: Sequence<Ballot<T>>, validator: (Ballot<T>) -> Unit): Map<T, Int> {
+    fun <T: Any> countLoss(ballots: Sequence<Ballot<T>>): Map<T, Int> {
         val graph = Graph<T>()
 
         ballots.forEach { b ->
-            validator(b)
-
             b.extractLinks().forEach { pair ->
                 graph.add(pair.first, pair.second)
             }
         }
 
         return graph.nodeNames()
-                .associate{ it to loss(graph, it).count() }
+                .associate{ it to lossFilter(graph, it).count() }
     }
 
-    private fun <T : Any> loss(graph: Graph<T>, nodeName: T) =
+    private fun <T : Any> lossFilter(graph: Graph<T>, nodeName: T) =
             graph.linksFor(nodeName).filter { it.weight < 0 }
 }
