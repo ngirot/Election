@@ -80,6 +80,46 @@ internal class ElectionIT {
         asserter.assertNull("There is no winner", result.winner())
     }
 
+    @Test
+    fun test_borda_with_a_winner_IT() {
+        val election = Election(listOf("A", "B", "C", "D"))
+
+        val ballot1 = Ballot(listOf("A", "B", "C", "D"))
+        val ballot2 = Ballot(listOf("B", "C", "D", "A"))
+        val ballot3 = Ballot(listOf("C", "D", "B", "A"))
+        val ballot4 = Ballot(listOf("D", "C", "B", "A"))
+
+
+        val ballotSequence = sequenceOf(
+                createBallotList(42, ballot1),
+                createBallotList(26, ballot2),
+                createBallotList(15, ballot3),
+                createBallotList(17, ballot4))
+                .flatten()
+
+        val result = election.borda(ballotSequence)
+
+        asserter.assertEquals("The winner is B", "B", result.winner())
+    }
+
+    @Test
+    fun test_borda_with_equality_IT() {
+        val election = Election(listOf("A", "B", "C"))
+
+        val ballot1 = Ballot(listOf("A", "B", "C"))
+        val ballot2 = Ballot(listOf("B", "A", "C"))
+
+
+        val ballotSequence = sequenceOf(
+                createBallotList(25, ballot1),
+                createBallotList(25, ballot2))
+                .flatten()
+
+        val result = election.borda(ballotSequence)
+
+        asserter.assertNull("The is no winner", result.winner())
+    }
+
     private fun <T> createBallotList(number: Int, ballot: Ballot<T>): Sequence<Ballot<T>> {
         val a = mutableListOf<Ballot<T>>()
         for (i in 1..number) {

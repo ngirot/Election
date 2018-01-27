@@ -1,6 +1,6 @@
 package com.github.ngirot.election.ballot
 
-data class Ballot<out T> constructor(val orderOfPreference: List<T>) {
+data class Ballot<T> constructor(val orderOfPreference: List<T>) {
 
     fun extractLinks(): List<Pair<T, T>> {
         val links = mutableListOf<Pair<T, T>>()
@@ -15,6 +15,11 @@ data class Ballot<out T> constructor(val orderOfPreference: List<T>) {
         }
 
         return links
+    }
+
+    fun positions(): Map<T, Int> {
+        return orderOfPreference.mapIndexed { pos, item -> item to pos +1 }
+                .associate { it }
     }
 
     fun first(): T? {

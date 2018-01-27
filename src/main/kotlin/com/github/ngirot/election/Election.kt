@@ -2,6 +2,7 @@ package com.github.ngirot.election
 
 import com.github.ngirot.election.ballot.Ballot
 import com.github.ngirot.election.ballot.InvalidBallotException
+import com.github.ngirot.election.method.Borda
 import com.github.ngirot.election.method.Condorcet
 import com.github.ngirot.election.method.FirstPastThePost
 import java.util.function.Function
@@ -17,6 +18,13 @@ class Election<T: Any>(private val candidates: List<T>) {
 
     fun firstPastThePost(votes: Sequence<Ballot<T>>): ElectionResult<T> {
         val counter = Function<Sequence<Ballot<T>>, Map<T, Int>> { FirstPastThePost.score(it) }
+        val scorer = Function<Map<T, Int>, Map<T, Int>> {Ranking.byHigherScore(it) }
+
+        return vote(counter, scorer).apply(votes)
+    }
+
+    fun borda(votes: Sequence<Ballot<T>>): ElectionResult<T> {
+        val counter = Function<Sequence<Ballot<T>>, Map<T, Int>> { Borda.scores(it, candidates.size) }
         val scorer = Function<Map<T, Int>, Map<T, Int>> {Ranking.byHigherScore(it) }
 
         return vote(counter, scorer).apply(votes)

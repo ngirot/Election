@@ -8,7 +8,7 @@ import kotlin.test.asserter
 internal class FirstPastThePostTest {
     @Test
     fun no_ballot_should_return_empty_count() {
-        val scores = FirstPastThePost.score(emptySequence())
+        val scores = FirstPastThePost.score<String>(emptySequence())
         asserter.assertTrue("No score", scores.isEmpty())
     }
 

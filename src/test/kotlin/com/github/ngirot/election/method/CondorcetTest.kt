@@ -9,7 +9,7 @@ internal class CondorcetTest {
 
     @Test
     fun no_ballot_should_return_empty_count() {
-        val scores = Condorcet.countLoss(emptySequence())
+        val scores = Condorcet.countLoss<String>(emptySequence())
         asserter.assertTrue("No score", scores.isEmpty())
     }
 
