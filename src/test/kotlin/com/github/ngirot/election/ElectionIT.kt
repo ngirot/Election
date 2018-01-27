@@ -22,7 +22,7 @@ internal class ElectionIT {
 
         val result = elections.condorcet(ballots)
 
-        asserter.assertEquals("The winner is C", "C", result)
+        asserter.assertEquals("The winner is C", "C", result.winner())
     }
 
     @Test
@@ -39,7 +39,7 @@ internal class ElectionIT {
 
         val result = elections.condorcet(ballots)
 
-        asserter.assertNull("There is a paradox", result)
+        asserter.assertNull("There is a paradox", result.winner())
     }
 
     @Test
@@ -56,9 +56,9 @@ internal class ElectionIT {
                 createBallotList(8, ballot3))
                 .flatten()
 
-        val elected = election.firstPastThePost(ballotSequence)
+        val result = election.firstPastThePost(ballotSequence)
 
-        asserter.assertEquals("The winner is B", "B", elected)
+        asserter.assertEquals("The winner is B", "B", result.winner())
     }
 
     @Test
@@ -75,9 +75,9 @@ internal class ElectionIT {
                 createBallotList(10, ballot3))
                 .flatten()
 
-        val elected = election.firstPastThePost(ballotSequence)
+        val result = election.firstPastThePost(ballotSequence)
 
-        asserter.assertNull("There is no winner", elected)
+        asserter.assertNull("There is no winner", result.winner())
     }
 
     private fun <T> createBallotList(number: Int, ballot: Ballot<T>): Sequence<Ballot<T>> {

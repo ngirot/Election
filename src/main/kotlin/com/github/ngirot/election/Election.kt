@@ -7,30 +7,16 @@ import com.github.ngirot.election.method.FirstPastThePost
 
 class Election<T: Any>(private val candidates: List<T>) {
 
-    fun condorcet(votes: Sequence<Ballot<T>>): T? {
+    fun condorcet(votes: Sequence<Ballot<T>>): ElectionResult<T> {
         val losses = Condorcet.countLoss(votes, this::checkBallotValidity)
         val ranking = Ranking.byLowerScore(losses)
-
-        val winners = ranking.filter { it.value == 1 }
-
-        return if (winners.size == 1) {
-            winners.entries.first()?.key
-        } else {
-            null
-        }
+        return ElectionResult(ranking)
     }
 
-    fun firstPastThePost(votes: Sequence<Ballot<T>>): T? {
+    fun firstPastThePost(votes: Sequence<Ballot<T>>): ElectionResult<T> {
         val counts = FirstPastThePost.score(votes, this::checkBallotValidity)
         val ranking = Ranking.byHigherScore(counts)
-
-        val winners = ranking.filter { it.value == 1 }
-
-        return if (winners.size == 1) {
-            winners.entries.first()?.key
-        } else {
-            null
-        }
+        return ElectionResult(ranking)
     }
 
     private fun checkBallotValidity(b: Ballot<T>) {
