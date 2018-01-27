@@ -8,11 +8,9 @@ object Condorcet {
     fun <T: Any> countLoss(ballots: Sequence<Ballot<T>>): Map<T, Int> {
         val graph = Graph<T>()
 
-        ballots.forEach { b ->
-            b.extractLinks().forEach { pair ->
-                graph.add(pair.first, pair.second)
-            }
-        }
+        ballots
+                .flatMap { it.extractLinks().asSequence() }
+                .forEach { pair -> graph.add(pair.first, pair.second) }
 
         return graph.nodeNames()
                 .associate{ it to lossFilter(graph, it).count() }
