@@ -8,14 +8,14 @@ import kotlin.test.asserter
 internal class FirstPastThePostTest {
     @Test
     fun no_ballot_should_return_empty_count() {
-        val scores = FirstPastThePost.score<String>(emptySequence())
+        val scores = FirstPastThePost.scores<String>(emptySequence())
         asserter.assertTrue("No score", scores.isEmpty())
     }
 
     @Test
     fun should_sum_points_from_one_ballot() {
         val ballots = sequenceOf(Ballot(listOf("A")))
-        val scores = FirstPastThePost.score(ballots)
+        val scores = FirstPastThePost.scores(ballots)
 
         asserter.assertEquals("A has one point", 1, scores["A"])
     }
@@ -30,7 +30,7 @@ internal class FirstPastThePostTest {
 
 
         val ballots = sequenceOf(ballot1, ballot2, ballot3, ballot4, ballot5)
-        val scores = FirstPastThePost.score(ballots)
+        val scores = FirstPastThePost.scores(ballots)
 
         asserter.assertEquals("A has two point", 2, scores["A"])
         asserter.assertEquals("A has three point", 3, scores["B"])

@@ -120,6 +120,15 @@ internal class ElectionIT {
         asserter.assertNull("The is no winner", result.winner())
     }
 
+    @Test
+    fun test_random_should_elect_something() {
+        val election = Election(listOf("A", "B", "C"))
+
+        val elected = election.random()
+
+        asserter.assertNotNull("There is always a winner", elected.winner())
+    }
+
     private fun <T> createBallotList(number: Int, ballot: Ballot<T>): Sequence<Ballot<T>> {
         val a = mutableListOf<Ballot<T>>()
         for (i in 1..number) {
