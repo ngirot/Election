@@ -9,7 +9,7 @@ object Condorcet {
         val graph = Graph<T>()
 
         ballots
-                .flatMap { it.extractLinks().asSequence() }
+                .flatMap { it.extractDuelsWon().asSequence() }
                 .forEach { pair -> graph.add(pair.first, pair.second) }
 
         return graph.nodeNames()
