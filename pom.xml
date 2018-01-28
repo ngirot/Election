@@ -8,11 +8,14 @@
     <artifactId>election</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <name>Election</name>
+    <description>A Kotlin library implementing multiple electoral systems</description>
+    <url>https://github.com/ngirot/Election</url>
+
     <properties>
         <kotlin.version>1.2.20</kotlin.version>
         <junit.version>5.1.0-M1</junit.version>
     </properties>
-
 
     <dependencies>
         <dependency>
@@ -25,6 +28,7 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-test</artifactId>
             <version>${kotlin.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -99,5 +103,25 @@
 
     </build>
 
+    <licenses>
+        <license>
+            <name>GNU General Public License (GPL) version 3.0</name>
+            <url>https://www.gnu.org/licenses/gpl-3.0.html</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Nicolas Girot</name>
+            <email>ngirot@hotmail.com</email>
+            <organizationUrl>https://github.com/ngirot</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/ngirot/Election.git</connection>
+        <developerConnection>scm:git:ssh://github.com:ngirot/Election.git</developerConnection>
+        <url>https://github.com/ngirot/Election/tree/master</url>
+    </scm>
 
 </project>
