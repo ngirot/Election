@@ -6,53 +6,42 @@ import com.github.ngirot.election.method.Borda
 import com.github.ngirot.election.method.Condorcet
 import com.github.ngirot.election.method.FirstPastThePost
 import com.github.ngirot.election.method.Sortition
-import java.util.function.Function
-import java.util.function.Supplier
 
 class Election<T: Any>(private val candidates: List<T>) {
 
     fun condorcet(votes: Sequence<Ballot<T>>): ElectionResult<T> {
-        val counter = Function<Sequence<Ballot<T>>, Map<T, Int>> { Condorcet.countLoss(it) }
-        val scorer = Function<Map<T, Int>, Map<T, Int>> {Ranking.byLowerScore(it) }
-
-        return voteWithBallot(counter, scorer).apply(votes)
+        return voteWithBallot(Condorcet::countLoss, Ranking::byLowerScore)(votes)
     }
 
     fun firstPastThePost(votes: Sequence<Ballot<T>>): ElectionResult<T> {
-        val counter = Function<Sequence<Ballot<T>>, Map<T, Int>> { FirstPastThePost.scores(it) }
-        val scorer = Function<Map<T, Int>, Map<T, Int>> {Ranking.byHigherScore(it) }
-
-        return voteWithBallot(counter, scorer).apply(votes)
+        return voteWithBallot(FirstPastThePost::scores, Ranking::byHigherScore)(votes)
     }
 
     fun borda(votes: Sequence<Ballot<T>>): ElectionResult<T> {
-        val counter = Function<Sequence<Ballot<T>>, Map<T, Int>> { Borda.scores(it, candidates.size) }
-        val scorer = Function<Map<T, Int>, Map<T, Int>> { Ranking.byHigherScore(it) }
-
-        return voteWithBallot(counter, scorer).apply(votes)
+        val scorer: (Sequence<Ballot<T>>) -> Map<T, Int> = { Borda.scores(it, candidates.size) }
+        return voteWithBallot(scorer, Ranking::byHigherScore)(votes)
     }
 
     fun sortition(): ElectionResult<T> {
-        val counter = Supplier { Sortition.scores(candidates) }
-        val scorer = Function<Map<T, Int>, Map<T, Int>> { Ranking.byHigherScore(it) }
-
-        return voteWithoutBallot(counter, scorer).get()
+        val scorer = { Sortition.scores(candidates) }
+        return voteWithoutBallot(scorer, Ranking::byHigherScore)()
     }
 
-    private fun voteWithBallot(counter: Function<Sequence<Ballot<T>>, Map<T, Int>>, scorer: Function<Map<T, Int>, Map<T, Int>>): Function<Sequence<Ballot<T>>, ElectionResult<T>> {
-        val ballotChecker = Function<Sequence<Ballot<T>>, Sequence<Ballot<T>>> { it.map { ensureBallotValidity(it) } }
+    private fun voteWithBallot(counter: (Sequence<Ballot<T>>) -> Map<T, Int>, scorer: (Map<T, Int>) -> Map<T, Int>): (Sequence<Ballot<T>>) -> ElectionResult<T> {
+        val ballotChecker: (b: Sequence<Ballot<T>>) -> Sequence<Ballot<T>> = { it.map { ensureBallotValidity(it) } }
+
 
         return resultBuilder(scorer)
                 .compose(counter)
                 .compose(ballotChecker)
     }
 
-    private fun voteWithoutBallot(counter: Supplier<Map<T, Int>>, scorer: Function<Map<T, Int>, Map<T, Int>>): Supplier<ElectionResult<T>> {
-        return Supplier { resultBuilder(scorer).apply(counter.get()) }
+    private fun voteWithoutBallot(counter: () -> Map<T, Int>, scorer: (Map<T, Int>) ->  Map<T, Int>): () -> ElectionResult<T> {
+        return { resultBuilder(scorer)(counter()) }
     }
 
-    private fun resultBuilder(scorer: Function<Map<T, Int>, Map<T, Int>>): Function<Map<T, Int>, ElectionResult<T>> {
-        val buildElectionResult = Function<Map<T, Int>, ElectionResult<T>> { ElectionResult(it) }
+    private fun resultBuilder(scorer: (Map<T, Int>) -> Map<T, Int>): (Map<T, Int>) -> ElectionResult<T> {
+        val buildElectionResult = { a: Map<T, Int> -> ElectionResult(a) }
 
         return buildElectionResult.compose(scorer)
     }
