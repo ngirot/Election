@@ -121,10 +121,10 @@ internal class ElectionIT {
     }
 
     @Test
-    fun test_random_should_elect_something() {
+    fun test_sortition_should_elect_something() {
         val election = Election(listOf("A", "B", "C"))
 
-        val elected = election.random()
+        val elected = election.sortition()
 
         asserter.assertNotNull("There is always a winner", elected.winner())
     }

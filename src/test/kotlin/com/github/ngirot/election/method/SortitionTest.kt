@@ -3,12 +3,14 @@ package com.github.ngirot.election.method
 import org.junit.jupiter.api.Test
 import kotlin.test.asserter
 
-internal class RandomTest {
+internal class SortitionTest {
+
+    private val loops = 10000
 
     @Test
     fun scores_should_map_all_candidates() {
-        for (i in 1..1000) {
-            val scores = Random.scores(listOf("A", "B", "C", "D"))
+        for (i in 1..loops) {
+            val scores = Sortition.scores(listOf("A", "B", "C", "D"))
 
             asserter.assertNotNull("A should be scored", scores["A"])
             asserter.assertNotNull("A should be scored", scores["B"])
@@ -18,11 +20,11 @@ internal class RandomTest {
     }
 
     @Test
-    fun scores_should_assigne_a_different_score_to_everyone() {
+    fun scores_should_assign_a_different_score_to_everyone() {
         val candidates = listOf("A", "B", "C", "D")
 
-        for (i in 1..1000) {
-            val scores = Random.scores(candidates)
+        for (i in 1..loops) {
+            val scores = Sortition.scores(candidates)
 
             val differentScores = scores.entries.map { it.value }.distinct()
 

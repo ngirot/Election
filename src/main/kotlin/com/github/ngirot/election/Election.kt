@@ -5,7 +5,7 @@ import com.github.ngirot.election.ballot.InvalidBallotException
 import com.github.ngirot.election.method.Borda
 import com.github.ngirot.election.method.Condorcet
 import com.github.ngirot.election.method.FirstPastThePost
-import com.github.ngirot.election.method.Random
+import com.github.ngirot.election.method.Sortition
 import java.util.function.Function
 import java.util.function.Supplier
 
@@ -32,9 +32,8 @@ class Election<T: Any>(private val candidates: List<T>) {
         return voteWithBallot(counter, scorer).apply(votes)
     }
 
-
-    fun random(): ElectionResult<T> {
-        val counter = Supplier { Random.scores(candidates) }
+    fun sortition(): ElectionResult<T> {
+        val counter = Supplier { Sortition.scores(candidates) }
         val scorer = Function<Map<T, Int>, Map<T, Int>> { Ranking.byHigherScore(it) }
 
         return voteWithoutBallot(counter, scorer).get()
