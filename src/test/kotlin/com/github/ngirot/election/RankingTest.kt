@@ -30,7 +30,7 @@ internal class RankingTest {
         val rank = Ranking.byHigherScore(mapOf("A" to 100, "B" to 100))
         asserter.assertEquals("A and B are equals", rank["B"], rank["A"])
     }
-    
+
     @Test
     fun byLowerScore_should_rank_empty_map() {
         val rank = Ranking.byLowerScore(emptyMap<String, Int>())

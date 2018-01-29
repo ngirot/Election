@@ -2,7 +2,6 @@ package com.github.ngirot.election.method
 
 import com.github.ngirot.election.ballot.Ballot
 import org.junit.jupiter.api.Test
-import kotlin.test.assertFailsWith
 import kotlin.test.asserter
 
 internal class FirstPastThePostTest {

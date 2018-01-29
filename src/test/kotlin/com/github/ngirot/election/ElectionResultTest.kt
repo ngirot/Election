@@ -1,6 +1,5 @@
 package com.github.ngirot.election
 
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import kotlin.test.asserter
 

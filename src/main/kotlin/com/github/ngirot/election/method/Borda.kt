@@ -4,7 +4,7 @@ import com.github.ngirot.election.ballot.Ballot
 
 object Borda {
 
-    fun <T> scores(ballots : Sequence<Ballot<T>>, scoreMax: Int): Map<T, Int> {
+    fun <T> scores(ballots: Sequence<Ballot<T>>, scoreMax: Int): Map<T, Int> {
         return ballots.map { it.positions() }
                 .flatMap { it.entries.asSequence() }
                 .map { it.key to scoreMax - it.value + 1 }

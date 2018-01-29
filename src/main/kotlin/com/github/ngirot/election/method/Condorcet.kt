@@ -5,7 +5,7 @@ import com.github.ngirot.election.graph.Graph
 
 object Condorcet {
 
-    fun <T: Any> countLoss(ballots: Sequence<Ballot<T>>): Map<T, Int> {
+    fun <T : Any> countLoss(ballots: Sequence<Ballot<T>>): Map<T, Int> {
         val graph = Graph<T>()
 
         ballots
@@ -13,7 +13,7 @@ object Condorcet {
                 .forEach { pair -> graph.add(pair.first, pair.second) }
 
         return graph.nodeNames()
-                .associate{ it to lossFilter(graph, it).count() }
+                .associate { it to lossFilter(graph, it).count() }
     }
 
     private fun <T : Any> lossFilter(graph: Graph<T>, nodeName: T) =

@@ -4,7 +4,7 @@ import com.github.ngirot.election.ballot.Ballot
 
 object FirstPastThePost {
 
-    fun <T: Any> scores(ballots: Sequence<Ballot<T>>): Map<T, Int> {
+    fun <T : Any> scores(ballots: Sequence<Ballot<T>>): Map<T, Int> {
         return ballots.map { it.first() }
                 .filterNotNull()
                 .groupBy { it }

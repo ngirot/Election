@@ -3,11 +3,11 @@ package com.github.ngirot.election
 object Ranking {
 
     fun <T> byHigherScore(scores: Map<T, Int>): Map<T, Int> {
-        return byScore(scores, {e -> e.value})
+        return byScore(scores, { e -> e.value })
     }
 
     fun <T> byLowerScore(scores: Map<T, Int>): Map<T, Int> {
-        return byScore(scores, {e -> -e.value})
+        return byScore(scores, { e -> -e.value })
     }
 
     private fun <T> byScore(scores: Map<T, Int>, ordered: (Map.Entry<T, Int>) -> Int): Map<T, Int> {

@@ -7,8 +7,8 @@ data class Ballot<T> constructor(val orderOfPreference: List<T>) {
 
         val preferenceSize = orderOfPreference.size
 
-        for(i in 0 until preferenceSize) {
-            for (j in i+1 until preferenceSize) {
+        for (i in 0 until preferenceSize) {
+            for (j in i + 1 until preferenceSize) {
                 links.add(orderOfPreference[i] to orderOfPreference[j])
             }
 
@@ -18,7 +18,7 @@ data class Ballot<T> constructor(val orderOfPreference: List<T>) {
     }
 
     fun positions(): Map<T, Int> {
-        return orderOfPreference.mapIndexed { pos, item -> item to pos +1 }
+        return orderOfPreference.mapIndexed { pos, item -> item to pos + 1 }
                 .associate { it }
     }
 

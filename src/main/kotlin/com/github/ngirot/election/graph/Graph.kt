@@ -5,7 +5,7 @@ class Graph<T> {
     private val nodes = mutableListOf<Node<T>>()
 
     fun add(from: T, to: T) {
-        val existing = nodes.find { node -> node.from == from && node.to == to}
+        val existing = nodes.find { node -> node.from == from && node.to == to }
         val reverse = nodes.find { node -> node.to == from && node.from == to }
 
         if (existing != null) {
