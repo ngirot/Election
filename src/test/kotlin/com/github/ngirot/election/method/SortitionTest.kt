@@ -31,4 +31,29 @@ internal class SortitionTest {
             asserter.assertEquals("All score are different", candidates.size, differentScores.size)
         }
     }
+
+    @Test
+    fun scores_should_be_different_when_ran_multiple_times_with_same_ballots() {
+        val candidates = listOf("A", "B")
+
+        var firstIsA = 0
+        var firstIsB = 0
+
+        for (i in 1..loops) {
+            val scores = Sortition.scores(candidates)
+            val scoreA = scores["A"]
+            val scoreB = scores["B"]
+            if(scoreA!=null && scoreB!=null) {
+                if (scoreA > scoreB) {
+                    firstIsA++
+                } else {
+                    firstIsB++
+                }
+            }
+        }
+
+        val max = loops*0.75
+        asserter.assertTrue("A should not win more than 75% of the time", max > firstIsA)
+        asserter.assertTrue("B should not win more than 75% of the time", max > firstIsB)
+    }
 }
