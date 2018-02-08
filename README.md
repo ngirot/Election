@@ -20,6 +20,11 @@ The candidate with the most points wins.
 More details on https://en.wikipedia.org/wiki/Borda_count
 
 ### Sortition
-The Athenian electoral system: a candidate is choosen randomly 
+The Athenian electoral system: a candidate is chosen randomly 
 
 More details on https://en.wikipedia.org/wiki/Sortition
+
+### Random ballot
+A ballot is picked randomly
+
+More details on https://en.wikipedia.org/wiki/Random_ballot
