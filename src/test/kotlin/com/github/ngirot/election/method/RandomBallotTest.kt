@@ -73,7 +73,6 @@ internal class RandomBallotTest {
             }
         }
 
-        val x= loops * 0.8
         asserter.assertTrue("A should not win more than 20% of the time", firstIsA < loops * 0.2)
         asserter.assertTrue("B should not win less than 80% of the time", firstIsB > loops * 0.8)
     }
