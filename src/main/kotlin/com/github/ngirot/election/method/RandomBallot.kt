@@ -8,29 +8,23 @@ object RandomBallot {
     fun <T : Any> scores(ballots: Sequence<Ballot<T>>): Map<T, Int> {
         val scores = mutableMapOf<T, Int>()
 
-        val nbOfCandidates = ballots.map { it.first() }
-                .filterNotNull()
-                .count()
+        rec(ballots.toList(), scores, 1)
 
-        var restrictedBallots = ballots.toList()
-        var ended = false
-        var score = nbOfCandidates
+        val positionMax = scores.map { it.value }.max() ?: 0
 
-        while (!ended) {
-            val elected = pickOne(restrictedBallots)
-
-
-            if (elected == null) {
-                ended = true
-            } else {
-                scores[elected] = score--
-            }
-        }
-
-        return scores
+        return scores.mapValues { positionMax - it.value }
     }
 
     fun <T> pickOne(ballots: List<Ballot<T>>): T? {
         return ballots.shuffled(SecureRandom()).firstOrNull()?.first()
+    }
+
+    tailrec fun <T> rec(remaining: List<Ballot<T>>, scores: MutableMap<T, Int>, position: Int) {
+        val picked = pickOne(remaining)
+        if (picked == null) {
+            return
+        } else
+            scores[picked] = position
+            rec(remaining.filter { it.first() != picked }, scores, position+1)
     }
 }
