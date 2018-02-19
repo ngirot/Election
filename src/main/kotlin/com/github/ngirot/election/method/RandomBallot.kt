@@ -5,7 +5,7 @@ import java.security.SecureRandom
 
 object RandomBallot {
 
-    fun <T : Any> scores(ballots: Sequence<Ballot<T>>): Map<T, Int> {
+    fun <T> scores(ballots: Sequence<Ballot<T>>): Map<T, Int> {
         val scores = positions(ballots.toList(), mapOf(), 1)
 
         val positionMax = scores.map { it.value }.max() ?: 0
