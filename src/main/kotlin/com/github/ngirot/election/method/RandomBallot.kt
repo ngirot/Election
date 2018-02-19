@@ -6,25 +6,28 @@ import java.security.SecureRandom
 object RandomBallot {
 
     fun <T : Any> scores(ballots: Sequence<Ballot<T>>): Map<T, Int> {
-        val scores = mutableMapOf<T, Int>()
-
-        rec(ballots.toList(), scores, 1)
+        val scores = positions(ballots.toList(), mapOf(), 1)
 
         val positionMax = scores.map { it.value }.max() ?: 0
 
         return scores.mapValues { positionMax - it.value }
     }
 
-    fun <T> pickOne(ballots: List<Ballot<T>>): T? {
-        return ballots.shuffled(SecureRandom()).firstOrNull()?.first()
+    private tailrec fun <T> positions(remaining: List<Ballot<T>>, scores: Map<T, Int>, position: Int): Map<T, Int> {
+        val picked = pickOne(remaining)
+
+        return if (picked != null) {
+            val newScores = scores.entries
+                    .union(mapOf(picked to position).entries)
+                    .associate { it.key to it.value}
+
+            positions(remaining.filter { it.first() != picked }, newScores, position + 1)
+        } else {
+            scores
+        }
     }
 
-    tailrec fun <T> rec(remaining: List<Ballot<T>>, scores: MutableMap<T, Int>, position: Int) {
-        val picked = pickOne(remaining)
-        if (picked == null) {
-            return
-        } else
-            scores[picked] = position
-            rec(remaining.filter { it.first() != picked }, scores, position+1)
+    private fun <T> pickOne(ballots: List<Ballot<T>>): T? {
+        return ballots.shuffled(SecureRandom()).firstOrNull()?.first()
     }
 }
