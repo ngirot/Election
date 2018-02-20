@@ -4,14 +4,12 @@ data class Ballot<T> constructor(val orderOfPreference: List<T>) {
 
     fun extractDuelsWon(): List<Pair<T, T>> {
         val links = mutableListOf<Pair<T, T>>()
-
         val preferenceSize = orderOfPreference.size
 
         for (i in 0 until preferenceSize) {
             for (j in i + 1 until preferenceSize) {
                 links.add(orderOfPreference[i] to orderOfPreference[j])
             }
-
         }
 
         return links

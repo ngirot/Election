@@ -10,8 +10,8 @@ object Ranking {
         return byScore(scores, { e -> -e.value })
     }
 
-    private fun <T> byScore(scores: Map<T, Int>, ordered: (Map.Entry<T, Int>) -> Int): Map<T, Int> {
-        val orderedScores = scores.entries.sortedBy { ordered(it) }
+    private fun <T> byScore(scores: Map<T, Int>, orderSelector: (Map.Entry<T, Int>) -> Int): Map<T, Int> {
+        val orderedScores = scores.entries.sortedBy { orderSelector(it) }
 
         var position = scores.size
         var lastScore: Int? = null
@@ -30,6 +30,6 @@ object Ranking {
             position--
 
             pair
-        }.associate { it.first to it.second }
+        }.associate { it }
     }
 }

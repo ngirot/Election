@@ -28,10 +28,4 @@ class Graph<T> {
     fun nodeNames(): List<T> {
         return nodes.flatMap { listOf(it.from, it.to) }.distinct()
     }
-
-    override fun toString(): String {
-        return "Graph(nodes=$nodes)"
-    }
-
-
 }

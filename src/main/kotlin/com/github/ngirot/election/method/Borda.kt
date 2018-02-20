@@ -11,6 +11,5 @@ object Borda {
                 .groupBy { it.first }
                 .mapValues { it.value.map { it.second } }
                 .mapValues { it.value.reduce { a, b -> a + b } }
-                .mapValues { it.value }
     }
 }
