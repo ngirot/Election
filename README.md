@@ -28,3 +28,8 @@ More details on https://en.wikipedia.org/wiki/Sortition
 A ballot is picked randomly
 
 More details on https://en.wikipedia.org/wiki/Random_ballot
+
+### Approval voting
+Each voter choose among the cadidate which one has his approval, the candidate with the most approval win.
+
+More details on https://en.wikipedia.org/wiki/Approval_voting

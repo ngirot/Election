@@ -138,6 +138,28 @@ internal class ElectionIT {
         asserter.assertNotNull("There is always a winner", elected.winner())
     }
 
+    @Test
+    fun test_approval_should_elect_something() {
+        val election = Election(listOf("A", "B", "C", "D"))
+
+        val ballot1 = Ballot(listOf("A"))
+        val ballot2 = Ballot(listOf("B", "D"))
+        val ballot3 = Ballot(listOf("A", "B", "C"))
+        val ballot4 = Ballot(listOf("B", "C", "D"))
+
+
+        val ballotSequence = sequenceOf(
+                createBallotList(42, ballot1),
+                createBallotList(26, ballot2),
+                createBallotList(15, ballot3),
+                createBallotList(17, ballot4))
+                .flatten()
+
+        val result = election.approval(ballotSequence)
+
+        asserter.assertEquals("The winner is B", "B", result.winner())
+    }
+
     private fun <T> createBallotList(number: Int, ballot: Ballot<T>): Sequence<Ballot<T>> {
         val a = mutableListOf<Ballot<T>>()
         for (i in 1..number) {

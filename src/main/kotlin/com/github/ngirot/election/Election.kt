@@ -2,10 +2,7 @@ package com.github.ngirot.election
 
 import com.github.ngirot.election.ballot.Ballot
 import com.github.ngirot.election.ballot.InvalidBallotException
-import com.github.ngirot.election.method.Borda
-import com.github.ngirot.election.method.Condorcet
-import com.github.ngirot.election.method.FirstPastThePost
-import com.github.ngirot.election.method.Sortition
+import com.github.ngirot.election.method.*
 
 class Election<T : Any>(private val candidates: List<T>) {
 
@@ -25,6 +22,10 @@ class Election<T : Any>(private val candidates: List<T>) {
     fun sortition(): ElectionResult<T> {
         val scorer = { Sortition.scores(candidates) }
         return voteWithoutBallot(scorer, Ranking::byHigherScore)()
+    }
+
+    fun approval(votes: Sequence<Ballot<T>>): ElectionResult<T> {
+        return voteWithBallot(Approval::scores, Ranking::byHigherScore)(votes)
     }
 
     private fun voteWithBallot(counter: (Sequence<Ballot<T>>) -> Map<T, Int>, scorer: (Map<T, Int>) -> Map<T, Int>): (Sequence<Ballot<T>>) -> ElectionResult<T> {

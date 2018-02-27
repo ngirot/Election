@@ -26,4 +26,15 @@ internal class BallotTest {
         asserter.assertTrue("c -> b", !links.contains("c" to "b"))
         asserter.assertTrue("b -> a", !links.contains("b" to "a"))
     }
+
+    @Test
+    fun ballot_should_have_selected_() {
+        val ballot = Ballot(listOf("a", "b"))
+
+        val selected = ballot.selected()
+
+        asserter.assertTrue("Contains a", selected.contains("a"))
+        asserter.assertTrue("Contains b", selected.contains("b"))
+        asserter.assertEquals("Only a and b", 2, selected.size)
+    }
 }

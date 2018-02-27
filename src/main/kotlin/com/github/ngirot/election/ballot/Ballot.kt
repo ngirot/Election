@@ -20,6 +20,10 @@ data class Ballot<T> constructor(val orderOfPreference: List<T>) {
                 .associate { it }
     }
 
+    fun selected(): List<T> {
+        return orderOfPreference
+    }
+
     fun first(): T? {
         return orderOfPreference.firstOrNull()
     }
