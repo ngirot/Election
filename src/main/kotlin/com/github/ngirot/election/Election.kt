@@ -28,6 +28,10 @@ class Election<T : Any>(private val candidates: List<T>) {
         return voteWithBallot(Approval::scores, Ranking::byHigherScore)(votes)
     }
 
+    fun instantRunoff(votes: Sequence<Ballot<T>>) : ElectionResult<T> {
+        return voteWithBallot(InstantRunoff::scores, Ranking::byLowerScore)(votes)
+    }
+
     private fun voteWithBallot(counter: (Sequence<Ballot<T>>) -> Map<T, Int>, scorer: (Map<T, Int>) -> Map<T, Int>): (Sequence<Ballot<T>>) -> ElectionResult<T> {
         val ballotChecker: (Sequence<Ballot<T>>) -> Sequence<Ballot<T>> = { it.map { ensureBallotValidity(it) } }
 

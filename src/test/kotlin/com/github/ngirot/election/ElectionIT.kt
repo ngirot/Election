@@ -160,6 +160,27 @@ internal class ElectionIT {
         asserter.assertEquals("The winner is B", "B", result.winner())
     }
 
+    @Test
+    fun test_instant_runoff_with_a_winner() {
+        val election = Election(listOf("A", "B", "C", "D"))
+
+        val ballot1 = Ballot(listOf("A", "B", "C", "D"))
+        val ballot2 = Ballot(listOf("B", "C", "D", "A"))
+        val ballot3 = Ballot(listOf("C", "D", "B", "A"))
+        val ballot4 = Ballot(listOf("D", "C", "B", "A"))
+
+        val ballotSequence = sequenceOf(
+                createBallotList(42, ballot1),
+                createBallotList(26, ballot2),
+                createBallotList(15, ballot3),
+                createBallotList(71, ballot4))
+                .flatten()
+
+        val result = election.instantRunoff(ballotSequence)
+
+        asserter.assertEquals("The winner is D", "D", result.winner())
+    }
+
     private fun <T> createBallotList(number: Int, ballot: Ballot<T>): Sequence<Ballot<T>> {
         val a = mutableListOf<Ballot<T>>()
         for (i in 1..number) {
