@@ -130,15 +130,6 @@ internal class ElectionIT {
     }
 
     @Test
-    fun test_randomBallot_should_elect_something() {
-        val election = Election(listOf("A", "B", "C"))
-
-        val elected = election.sortition()
-
-        asserter.assertNotNull("There is always a winner", elected.winner())
-    }
-
-    @Test
     fun test_approval_should_elect_something() {
         val election = Election(listOf("A", "B", "C", "D"))
 
